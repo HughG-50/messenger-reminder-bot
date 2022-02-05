@@ -42,7 +42,7 @@ chat_first_element.click()
 time.sleep(3)
 
 chat_input = browser.find_element(By.XPATH, "//div[@role = 'textbox']")
-chat_input.send_keys("Post your screentime screenshots")
+chat_input.send_keys("📱📱 Post your screentime screenshots 🧐 🧐 ")
 time.sleep(5)
 submit_button = browser.find_element(By.XPATH, "//div[@aria-label='Press Enter to send']")
 
