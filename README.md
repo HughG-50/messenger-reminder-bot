@@ -113,7 +113,11 @@ browser = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), 
 
 ### Checking Heroku logs
 
-`heroku logs –app <your_app_name> — tail`
+https://devcenter.heroku.com/articles/logging
+
+`heroku logs –app <your_app_name> —-tail`
+
+- `--tail` option gives us a real time live stream of logs from the app
 
 ### Running script on a schedule
 
