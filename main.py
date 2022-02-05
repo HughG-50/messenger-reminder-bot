@@ -2,6 +2,7 @@ import os
 import time
 from dotenv import load_dotenv
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
@@ -11,7 +12,8 @@ options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
 options.add_argument("--headless")
 options.add_argument("--disable-dev-shm-usage")
 options.add_argument("--no-sandbox")
-browser = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), options=options)
+s=Service(os.environ.get("CHROMEDRIVER_PATH"))
+browser = webdriver.Chrome(service=s, options=options)
 
 browser.get("https://www.google.com")
 print(browser.title)

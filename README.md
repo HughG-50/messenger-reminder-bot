@@ -2,6 +2,15 @@
 
 Bot to send reminders in messenger
 
+### Setting up a virtual env with pipenv
+
+https://docs.python-guide.org/dev/virtualenvs/
+
+```
+cd <your_project_directory>
+pipenv install <package>
+```
+
 ### Installing dependencies and using pipenv
 
 pipenv is like a package manager for a python project. Need to install packages with it, e.g.
@@ -39,6 +48,10 @@ response = requests.get('https://httpbin.org/ip')
 print('Your IP is {0}'.format(response.json()['origin']))
 ```
 
+**Running script manually on Heroku**
+
+`heroku run python main.py`
+
 ## Deploying to Heroku
 
 1. Create new app in Heroku
@@ -49,6 +62,9 @@ print('Your IP is {0}'.format(response.json()['origin']))
 web: python <your_script_name.py>
 worker: python <your_script_name.py>
 ```
+
+- web - use when deploying web apps or HTTP request related scripts
+- worker - use when deploying normal scripts
 
 4. Setup `requirements.txt` file
 
@@ -94,3 +110,21 @@ browser = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), 
 
 `CHROMEDRIVER_PATH` = `/app/.chromedriver/bin/chromedriver`
 `GOOGLE_CHROME_BIN` = `/app/.apt/usr/bin/google-chrome`
+
+### Checking Heroku logs
+
+`heroku logs –app <your_app_name> — tail`
+
+### Running script on a schedule
+
+https://devcenter.heroku.com/articles/scheduler
+
+1. Install the Heroku Scheduler add on
+
+`heroku addons:create scheduler:standard`
+
+Resources > Add ons > Heroku Scheduler
+
+2. Open scheduler dashbaord
+
+`heroku addons:open scheduler`
