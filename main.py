@@ -14,7 +14,7 @@ options.add_argument("--no-sandbox")
 browser = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), options=options)
 
 browser.get("https://www.google.com")
-print(browser.page_source)
+print(browser.title)
 
 # ###############
 # REMOVE COMMENTS ONCE WORKING ON HEROKU
