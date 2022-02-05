@@ -29,27 +29,23 @@ login_button = browser.find_element(By.ID, "loginbutton")
 
 email_input.send_keys(username)
 time.sleep(3)
-print(email_input.get_attribute("id"))
-print(email_input.get_attribute("value"))
 
 password_input.send_keys(password)
 time.sleep(4)
-print(password_input.get_attribute("id"))
-print(bool(password_input.get_attribute("value")))
 
 login_button.click()
 time.sleep(11)
 
 print("Logged in")
 print("Finding chat...")
-chat_list_container = browser.find_element(By.CSS_SELECTOR, "[aria-label=Chats]")
+chat_list_container = browser.find_element(By.CSS_SELECTOR, "div[data-testid='MWJewelThreadListContainer']")
 chat_first_element = chat_list_container.find_element(By.CSS_SELECTOR, "div[data-testid='mwthreadlist-item-open']")
 chat_first_element.click()
 time.sleep(3)
 
 print("Sending reminder message...")
 chat_input = browser.find_element(By.XPATH, "//div[@role = 'textbox']")
-chat_input.send_keys("📱📱 Post your screentime screenshots 🧐 🧐 ")
+chat_input.send_keys("**ATTN - Post your screentime screenshots**")
 time.sleep(5)
 submit_button = browser.find_element(By.XPATH, "//div[@aria-label='Press Enter to send']")
 
