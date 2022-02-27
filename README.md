@@ -132,3 +132,117 @@ Resources > Add ons > Heroku Scheduler
 2. Open scheduler dashbaord
 
 `heroku addons:open scheduler`
+
+## Setting up Cron job on Mac
+
+https://blog.dennisokeeffe.com/blog/2021-01-19-running-cronjobs-on-your-local-mac
+
+### Setting up a basic shell script
+
+```
+# Create the .scripts folder at the root
+mkdir ~/.scripts
+# Change into the folder
+cd ~/.scripts
+# Create the file ~/.scripts/hello.sh
+touch hello.sh
+# Ensure we enable execution permissions for the file
+chmod u+x ./hello.sh
+```
+
+### Crontab
+
+```
+ +---------------- minute (0 - 59)
+ |  +------------- hour (0 - 23)
+ |  |  +---------- day of month (1 - 31)
+ |  |  |  +------- month (1 - 12)
+ |  |  |  |  +---- day of week (0 - 6) (Sunday=0 or 7)
+ |  |  |  |  |
+ *  *  *  *  *  command to be executed
+```
+
+https://crontab.guru/examples.html
+
+At 6pm on Sunday's
+
+```
+0 18 * * SUN cd ~/.scripts && ./my_script.sh
+```
+
+## Using launchd to run scripts on Mac
+
+- launchd is a more advanced featured tool/framework for starting, stopping and managing daemons, applications, processes, and scripts on Mac
+- a daemon is a program running in the background without requiring user input, daemon is root user level, whereas agent runs on behalf of logged in user
+- launchd is better than crontab because if your computer is off when scheduled to run, launchd will run once computer boots up, it will also wake up sleeping computer
+
+### Launchd configuration
+
+https://medium.com/@chetcorcos/a-simple-launchd-tutorial-9fecfcf2dbb3
+
+We need to create plist files for each script that we want to be run with launchd.
+(Did not take this approach because XML much more complicated than crontab to figure out)
+
+- plist files are Apple's custom XML format for configurations
+
+**Creating a launchd configuration plist file**
+
+```
+touch ~/Library/LaunchAgents/com.demo.daemon.plist
+```
+
+- plists in `~/Library/LaunchAgents` folder are automatically loaded into launchd when you log in
+
+The following script:
+
+- runs whenever the user logs in
+- executes every 20 seconds
+- output to some log files
+- sets the environment path
+
+```
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+
+    <key>Label</key>
+    <string>com.demo.daemon.plist</string>
+
+    <key>RunAtLoad</key>
+    <true/>
+
+    <key>StartInterval</key>
+    <integer>20</integer>
+
+    <key>StandardErrorPath</key>
+    <string>/Users/chet/demo/stderr.log</string>
+
+    <key>StandardOutPath</key>
+    <string>/Users/chet/demo/stdout.log</string>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+      <key>PATH</key>
+      <string><![CDATA[/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin]]></string>
+    </dict>
+
+    <key>WorkingDirectory</key>
+    <string>/Users/chet/demo</string>
+
+    <key>ProgramArguments</key>
+    <array>
+      <string>/usr/local/bin/node</string>
+      <string>main.js</string>
+    </array>
+
+  </dict>
+</plist>
+```
+
+**Running launchd**
+
+```
+launchctl load ~/Library/LaunchAgents/com.demo.daemon.plist
+```

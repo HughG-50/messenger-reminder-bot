@@ -12,8 +12,10 @@ options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
 options.add_argument("--headless")
 options.add_argument("--disable-dev-shm-usage")
 options.add_argument("--no-sandbox")
-s=Service(os.environ.get("CHROMEDRIVER_PATH"))
-browser = webdriver.Chrome(service=s, options=options)
+# Used for Heroku config
+# s=Service(os.environ.get("CHROMEDRIVER_PATH"))
+# service=s,
+browser = webdriver.Chrome(options=options)
 
 username = os.getenv('USERNAME')
 password = os.getenv('PASSWORD')
