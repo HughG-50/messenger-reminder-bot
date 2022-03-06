@@ -48,6 +48,20 @@ response = requests.get('https://httpbin.org/ip')
 print('Your IP is {0}'.format(response.json()['origin']))
 ```
 
+### Virtual env shell
+
+`pipenv shell`
+
+- launches subshell in virtual env (e.g. the one defined by the Pipfile)
+
+`exit`
+
+- exit the virtual env shell
+
+`pipenv --rm`
+
+- removes the pipenv shell defined by the Pipfile (only works if you haven't deleted the Pipfile, otherwise you need to delete the activation file)
+
 **Running script manually on Heroku**
 
 `heroku run python main.py`
@@ -137,6 +151,23 @@ Resources > Add ons > Heroku Scheduler
 
 https://blog.dennisokeeffe.com/blog/2021-01-19-running-cronjobs-on-your-local-mac
 
+https://stackoverflow.com/questions/48990067/how-to-run-a-cron-job-with-pipenv
+
+- Issues with running a script with crontab with pipenv shell, note answer which tells you how to run it
+- Get the path to the virtual env e.g.
+  `~/.local/share/virtualenvs/messenger-reminder-bot-BsQ_qW-P/bin`
+  and fix your shell script like the example:
+
+```
+#!/bin/bash
+#or whatever shell you use
+cd /Users/X/Code/python/example
+. /<path>/<to>/<virtualenv>/bin/activate
+# you should specifiy the python version in the below command
+#python2.7 start.py >> /Users/X/Code/python/example/log.txt 2>&1
+python3 start.py >> /Users/X/Code/python/example/log.txt 2>&1
+```
+
 ### Setting up a basic shell script
 
 ```
@@ -168,6 +199,14 @@ At 6pm on Sunday's
 
 ```
 0 18 * * SUN cd ~/.scripts && ./my_script.sh
+```
+
+### Logging crontab output
+
+https://stackoverflow.com/questions/24957734/start-python-script-with-cron-and-output-print-to-a-file
+
+```
+*/3 * * * * /home/ubuntu/my_script.sh >> /home/ubuntu/Logs.txt 2>&1
 ```
 
 ## Using launchd to run scripts on Mac
@@ -246,3 +285,10 @@ The following script:
 ```
 launchctl load ~/Library/LaunchAgents/com.demo.daemon.plist
 ```
+
+## Shell
+
+`$(date)` gives you the current time and date
+
+Permissions issue for cron
+https://stackoverflow.com/questions/58844669/trying-to-run-a-python-script-with-cron-getting-errno-1-operation-not-permitt
